@@ -3,10 +3,10 @@ from tkinter import (
     Frame,
     Label,
     Button,
-    Checkbutton,
     Entry,
 )
 from config_apps import Config
+from run_app import run_app
 
 
 class Application:
@@ -27,6 +27,7 @@ class Application:
         self.initialization["text"] = "Iniciar Programas"
         self.initialization["font"] = ("Calibri", "8")
         self.initialization["width"] = 12
+        self.initialization["command"] = self.run
         self.initialization.pack(side="left")
 
         self.choose_programs = Button(self.containerPrincipal)
@@ -50,11 +51,12 @@ class Application:
         self.titulo2["font"] = ("Arial", "10", "bold")
         self.titulo2.pack()
 
-        self.program2 = Checkbutton(
-            self.containerPrincipal2, text="Programa 2"
-        )
-        self.program2["font"] = ("Calibri", "8")
-        self.program2.pack()
+        for app in self.config.apps:
+            self.program2 = Label(
+                self.containerPrincipal2, text=f"{app['name']}"
+            )
+            self.program2["font"] = ("Calibri", "8")
+            self.program2.pack()
 
         self.back_button = Button(self.containerPrincipal2)
         self.back_button["text"] = "Voltar para a primeira interface"
@@ -89,10 +91,19 @@ class Application:
 
     def save_app(self):
         app = self.input.get()
-        self.config.add_app(app)
+        new_app = {
+            "name": app,
+            "rota": ""
+        }
+        self.config.add_app(new_app)
         self.config._save()
+
+    def run(self):
+        for app in self.config.apps:
+            run_app(app["name"])
 
 
 root = Tk()
 Application(root)
+root.title("Inicializador de Aplicativos")
 root.mainloop()

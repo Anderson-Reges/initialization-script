@@ -26,4 +26,8 @@ class Config:
             with open(self.filename, 'rb') as f:
                 self.apps = pickle.load(f)
         except FileNotFoundError:
-            raise FileNotFoundError("Arquivo não encontrado")
+            self._save()
+
+            raise FileNotFoundError(
+                "Arquivo não encontrado, por isso foi criado um"
+            )
