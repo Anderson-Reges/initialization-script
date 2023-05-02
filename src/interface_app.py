@@ -93,7 +93,6 @@ class Application:
         app = self.input.get()
         new_app = {
             "name": app,
-            "rota": ""
         }
         self.config.add_app(new_app)
         self.config._save()
